@@ -1,0 +1,18 @@
+*.iml
+.gradle
+local.properties
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.idea
+/manager/signing.properties
+/axora-release.keystore
+/out
+/signing.properties
+demo.kotlin/
+/Axeron-API/
+
+# RevCore signing - never commit
+*.keystore
+*.jks

@@ -1,0 +1,69 @@
+import com.android.build.api.dsl.ApplicationExtension
+import com.android.build.gradle.LibraryExtension
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension
+
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+plugins {
+    alias(libs.plugins.android.application) apply false
+    alias(libs.plugins.kotlin.android) apply false
+    alias(libs.plugins.android.library) apply false
+    alias(libs.plugins.kotlin.compose) apply false
+    alias(libs.plugins.rikka.tools.refine) apply false
+    alias(libs.plugins.android.test) apply false
+}
+
+apply(from = "api/manifest.gradle.kts")
+// git may be absent on machines without a VCS install — fall back to a
+// fixed commit count so local builds still work.
+val gitCommitCount = try {
+    providers.exec {
+        commandLine("git", "rev-list", "--count", "HEAD")
+    }.standardOutput.asText.get().trim().toInt()
+} catch (e: Exception) {
+    1
+}
+val apiVersionCode = findProperty("api_version")?.toString()?.toIntOrNull() ?: 13180
+val verName = "${findProperty("api_version_name")}.r${gitCommitCount}"
+
+subprojects {
+    plugins.withId("com.android.application") {
+        extensions.configure<ApplicationExtension> {
+            compileSdk = 36
+            buildToolsVersion = "36.0.0"
+            ndkVersion = "29.0.14206865"
+            defaultConfig {
+                minSdk = 26
+                targetSdk = 36
+                versionCode = apiVersionCode
+                versionName = verName
+            }
+            compileOptions {
+                sourceCompatibility = JavaVersion.VERSION_21
+                targetCompatibility = JavaVersion.VERSION_21
+            }
+        }
+    }
+    plugins.withId("com.android.library") {
+        extensions.configure<LibraryExtension> {
+            compileSdk = 36
+            buildToolsVersion = "36.0.0"
+            ndkVersion = "29.0.14206865"
+            defaultConfig {
+                minSdk = 26
+            }
+            compileOptions {
+                sourceCompatibility = JavaVersion.VERSION_21
+                targetCompatibility = JavaVersion.VERSION_21
+            }
+        }
+    }
+    plugins.withId("org.jetbrains.kotlin.android") {
+        extensions.configure<KotlinAndroidProjectExtension> {
+            compilerOptions {
+                jvmTarget.set(JvmTarget.JVM_21)
+            }
+        }
+    }
+}
+

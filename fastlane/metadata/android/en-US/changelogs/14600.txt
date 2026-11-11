@@ -1,0 +1,1 @@
+The new generation MD3 design style Shizuku client has been officially released, this is the first version
