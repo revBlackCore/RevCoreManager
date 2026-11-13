@@ -40,7 +40,7 @@
     <string name="webui_connecting">正在连接 RevCore…</string>
     <string name="webui_service_unavailable_title">RevCore 服务不可用</string>
     <string name="webui_service_unavailable">RevCore 后台服务尚未运行。请打开 RevCore 后重试。</string>
-    <string name="webui_open_RevCore">打开 RevCore</string>
+    <string name="webui_open_axora">打开 RevCore</string>
     <string name="webui_service_stopped">RevCore 服务已停止。请重新打开 RevCore 以继续使用 WebUI。</string>
     <string name="webui_plugin_id_missing">缺少插件 ID。</string>
     <string name="webui_plugin_not_found">未找到插件。</string>
@@ -305,8 +305,8 @@
     <string name="update_error">检查更新时出错</string>
     <string name="qs_tile_label">快速访问</string>
     <string name="qs_tile_clicked">已点击快速访问</string>
-    <string name="RevCore_version">RevCore 版本</string>
-    <string name="RevCore_version_label">RevCore 版本: %s</string>
+    <string name="axora_version">RevCore 版本</string>
+    <string name="axora_version_label">RevCore 版本: %s</string>
     <string name="auto_restart">自动重启</string>
     <string name="auto_restart_desc">当服务器进程被系统终止时自动重启 RevCore</string>
     <string name="select_font">选择字体</string>

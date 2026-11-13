@@ -64,7 +64,7 @@ fun StatusCard() {
                 Icon(
                     modifier = Modifier
                         .size(145.dp),
-                    painter = painterResource(R.drawable.ic_revcore),
+                    painter = painterResource(R.drawable.ic_revcore_logo),
                     contentDescription = null
                 )
             }

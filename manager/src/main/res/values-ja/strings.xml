@@ -40,7 +40,7 @@
     <string name="webui_connecting">RevCore に接続しています…</string>
     <string name="webui_service_unavailable_title">RevCore サービスを利用できません</string>
     <string name="webui_service_unavailable">RevCore のバックグラウンドサービスが起動していません。RevCore を開いてから再試行してください。</string>
-    <string name="webui_open_RevCore">RevCore を開く</string>
+    <string name="webui_open_axora">RevCore を開く</string>
     <string name="webui_service_stopped">RevCore サービスが停止しました。WebUI を続けるには RevCore を開き直してください。</string>
     <string name="webui_plugin_id_missing">プラグイン ID がありません。</string>
     <string name="webui_plugin_not_found">プラグインが見つかりません。</string>
@@ -305,8 +305,8 @@
     <string name="update_error">更新確認中にエラーが発生しました</string>
     <string name="qs_tile_label">クイックアクセス</string>
     <string name="qs_tile_clicked">クイックアクセスがクリックされました</string>
-    <string name="RevCore_version">RevCoreバージョン</string>
-    <string name="RevCore_version_label">RevCoreバージョン: %s</string>
+    <string name="axora_version">RevCoreバージョン</string>
+    <string name="axora_version_label">RevCoreバージョン: %s</string>
     <string name="auto_restart">自動再起動</string>
     <string name="auto_restart_desc">サーバープロセスがシステムによって終了されたときにRevCoreを自動的に再起動します</string>
     <string name="select_font">フォントを選択</string>

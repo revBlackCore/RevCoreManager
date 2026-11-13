@@ -24,6 +24,7 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -55,10 +56,12 @@ import frb.axeron.shared.AxeronApiConstant
 import frb.axeron.shared.PathHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import java.util.concurrent.atomic.AtomicBoolean
 
 @Destination<RootGraph>
 @Composable
@@ -86,6 +89,26 @@ fun ExecutePluginActionScreen(
     var text by rememberSaveable { mutableStateOf("") }
     val logContent = rememberSaveable { StringBuilder() }
 
+    // RevCore: coalesce log output - action.sh can emit thousands of lines and
+    // a Main coroutine per line was flooding the UI thread (ANRs).
+    val uiLogLock = remember { Any() }
+    val uiLogBuffer = remember { StringBuilder() }
+    val uiLogScheduled = remember { AtomicBoolean(false) }
+    val uiLogResetPending = remember { AtomicBoolean(false) }
+
+    val flushUiLog: () -> Unit = {
+        val (chunk, reset) = synchronized(uiLogLock) {
+            val c = uiLogBuffer.toString()
+            uiLogBuffer.setLength(0)
+            c to uiLogResetPending.getAndSet(false)
+        }
+        if (reset) {
+            text = chunk
+        } else if (chunk.isNotEmpty()) {
+            text += chunk
+        }
+    }
+
     LaunchedEffect(Unit) {
         if (text.isNotEmpty()) {
             return@LaunchedEffect
@@ -103,22 +126,29 @@ fun ExecutePluginActionScreen(
                 $$"export PATH=$$pluginBin:$PATH; cd \"$$pluginPath\"; sh ./action.sh; RES=$?; cd /; exit $RES"
             AxeronPluginService.execWithIO(
                 cmd = cmd,
-                onStdout = {
-                    if (AnsiFilter.isScreenControl(it)) { // clear command
-                        launch(Dispatchers.Main) {
-                            text = AnsiFilter.stripAnsi(it) + "\n"
-                        }
-                    } else {
-                        launch(Dispatchers.Main) {
-                            text += "$it\n"
+                onStdout = { line ->
+                    synchronized(uiLogLock) {
+                        if (AnsiFilter.isScreenControl(line)) { // clear command
+                            uiLogBuffer.setLength(0)
+                            uiLogBuffer.append(AnsiFilter.stripAnsi(line)).append("\n")
+                            uiLogResetPending.set(true)
+                        } else {
+                            uiLogBuffer.append(line).append("\n")
                         }
                     }
-                    logContent.append(it).append("\n")
+                    logContent.append(line).append("\n")
+                    if (uiLogScheduled.compareAndSet(false, true)) {
+                        launch(Dispatchers.Main) {
+                            uiLogScheduled.set(false)
+                            flushUiLog()
+                        }
+                    }
                 },
                 onStderr = {
                     logContent.append(it).append("\n")
                 }
             )
+            withContext(Dispatchers.Main) { flushUiLog() }
         }
         isActionRunning = false
     }

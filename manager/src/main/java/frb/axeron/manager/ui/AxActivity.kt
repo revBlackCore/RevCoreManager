@@ -167,12 +167,11 @@ class AxActivity : ComponentActivity() {
 
         // RevCore: system back must return from pushed screens (settings
         // categories, editor, etc.) to the tab pager instead of finishing the
-        // activity. Screen-level BackHandlers (Flash, QuickShell, plugin action)
-        // register later and still take precedence while they are enabled.
-        BackHandler(
-            enabled = currentDestination?.route != null &&
-                currentDestination?.route != TabsPlaceholderDestination.route
-        ) {
+        // activity. Only enabled when a previous entry actually exists, so a
+        // second quick press can never pop the start destination and strand
+        // the app on an empty back stack. Screen-level BackHandlers (Flash,
+        // QuickShell, plugin action) register later and still take precedence.
+        BackHandler(enabled = navController.previousBackStackEntry != null) {
             navController.popBackStack()
         }
 

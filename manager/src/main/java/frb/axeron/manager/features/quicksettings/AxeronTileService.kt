@@ -11,7 +11,7 @@ class AxeronTileService : android.service.quicksettings.TileService() {
         super.onStartListening()
         qsTile.apply {
             label = getString(R.string.qs_tile_label)
-            icon = Icon.createWithResource(this@AxeronTileService, R.drawable.ic_revcore)
+            icon = Icon.createWithResource(this@AxeronTileService, R.drawable.ic_revcore_logo)
             state = Tile.STATE_INACTIVE
             updateTile()
         }

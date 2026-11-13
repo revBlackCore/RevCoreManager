@@ -39,6 +39,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 
 class ActivateViewModel : ViewModel() {
 
@@ -132,13 +133,15 @@ class ActivateViewModel : ViewModel() {
     fun setShizukuIntercept(enable: Boolean) {
         viewModelScope.launch(Dispatchers.Main) {
             isShizukuActive = enable
-            Axeron.enableShizukuService(enable)
+            withContext(Dispatchers.IO) { Axeron.enableShizukuService(enable) }
         }
     }
 
     fun checkShizukuIntercept() {
         viewModelScope.launch(Dispatchers.Main) {
-            isShizukuActive = Axeron.pingBinder() && Axeron.getShizukuService() != null
+            isShizukuActive = withContext(Dispatchers.IO) {
+                Axeron.pingBinder() && Axeron.getShizukuService() != null
+            }
         }
     }
 
@@ -186,20 +189,24 @@ class ActivateViewModel : ViewModel() {
     fun axeronObserve(): Flow<ActivateStatus> = callbackFlow {
         if (Axeron.pingBinder()) {
             Log.i("RevCoreBinder", "binderHasReceived")
-            val info = Axeron.getAxeronInfo()
+            // RevCore: binder IPC off the main thread - getAxeronInfo() can
+            // block while the server is busy/restarting and was ANR-ing the UI.
+            val info = withContext(Dispatchers.IO) { Axeron.getAxeronInfo() }
             when (val status = classify(info)) {
                 is ActivateStatus.Updating -> {
                     trySend(status)
                     setTryToActivate(true)
-                    Axeron.newProcess(
-                        AxeronCommandSession.getQuickCmd(
-                            Starter.internalCommand,
-                            true,
-                            false
-                        ),
-                        null,
-                        null
-                    )
+                    withContext(Dispatchers.IO) {
+                        Axeron.newProcess(
+                            AxeronCommandSession.getQuickCmd(
+                                Starter.internalCommand,
+                                true,
+                                false
+                            ),
+                            null,
+                            null
+                        )
+                    }
                 }
 
                 else -> trySend(status)
@@ -235,7 +242,7 @@ class ActivateViewModel : ViewModel() {
                 var bound = Axeron.pingBinder()
                 for (attempt in 1..BINDER_REQUEST_ATTEMPTS) {
                     if (bound) break
-                    BinderRequest.request(Engine.application)
+                    withContext(Dispatchers.IO) { BinderRequest.request(Engine.application) }
                     if (attempt < BINDER_REQUEST_ATTEMPTS) {
                         delay(BINDER_REQUEST_RETRY_MS)
                         bound = Axeron.pingBinder()

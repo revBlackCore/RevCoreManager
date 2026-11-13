@@ -17,7 +17,9 @@ import frb.axeron.manager.ui.component.rememberConfirmDialog
 import frb.axeron.manager.ui.screen.FlashIt
 import frb.axeron.shared.AxeronApiConstant
 import frb.axeron.shared.PathHelper
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @Composable
 fun PathSettings(
@@ -55,10 +57,14 @@ fun PathSettings(
                         scope.launch {
                             val confirmResult = confirmDialog.awaitConfirm(
                                 title,
-                                content = content.format(PathHelper.getWorkingPath(
-                                    Axeron.getAxeronInfo().isRoot(),
-                                    AxeronApiConstant.folder.PARENT
-                                ).absolutePath),
+                                content = content.format(
+                                    withContext(Dispatchers.IO) {
+                                        PathHelper.getWorkingPath(
+                                            Axeron.getAxeronInfo().isRoot(),
+                                            AxeronApiConstant.folder.PARENT
+                                        ).absolutePath
+                                    }
+                                ),
                                 confirm = confirm,
                                 dismiss = dismiss
                             )

@@ -201,7 +201,7 @@ fun RequestPermissionDialog(
             }
 
             Icon(
-                painter = painterResource(id = R.drawable.ic_revcore),
+                painter = painterResource(id = R.drawable.ic_revcore_logo),
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.size(38.dp)

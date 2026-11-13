@@ -111,6 +111,7 @@ import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import java.util.concurrent.atomic.AtomicBoolean
 
 enum class FlashingStatus {
     IDLE,
@@ -407,6 +408,27 @@ fun FlashScreen(
     val errorSaveLog = stringResource(R.string.log_error_code)
     var flashResult by remember { mutableStateOf<AxeronPluginService.FlashResult?>(null) }
 
+    // RevCore: coalesce log output. Plugin scripts can emit thousands of lines;
+    // launching a Main coroutine per line flooded the UI thread and caused ANRs.
+    // Lines are buffered on the IO thread and flushed once per main-loop turn.
+    val uiLogLock = remember { Any() }
+    val uiLogBuffer = remember { StringBuilder() }
+    val uiLogScheduled = remember { AtomicBoolean(false) }
+    val uiLogResetPending = remember { AtomicBoolean(false) }
+
+    val flushUiLog: () -> Unit = {
+        val (chunk, reset) = synchronized(uiLogLock) {
+            val c = uiLogBuffer.toString()
+            uiLogBuffer.setLength(0)
+            c to uiLogResetPending.getAndSet(false)
+        }
+        if (reset) {
+            text = chunk
+        } else if (chunk.isNotEmpty()) {
+            text += chunk
+        }
+    }
+
     LaunchedEffect(pendingFlashIt) {
         if (pendingFlashIt == null || text.isNotEmpty() || hasFlashed) return@LaunchedEffect
         hasFlashed = true
@@ -414,17 +436,21 @@ fun FlashScreen(
         launch(Dispatchers.IO) {
             val result = flashIt(
                 pendingFlashIt!!,
-                onStdout = {
-                    logContent.append(it).append("\n")
-                    if (AnsiFilter.isScreenControl(it)) { // clear command
-                        // Switch to the main thread to update state
-                        launch(Dispatchers.Main) {
-                            text = AnsiFilter.stripAnsi(it) + "\n"
+                onStdout = { line ->
+                    logContent.append(line).append("\n")
+                    synchronized(uiLogLock) {
+                        if (AnsiFilter.isScreenControl(line)) { // clear command
+                            uiLogBuffer.setLength(0)
+                            uiLogBuffer.append(AnsiFilter.stripAnsi(line)).append("\n")
+                            uiLogResetPending.set(true)
+                        } else {
+                            uiLogBuffer.append(line).append("\n")
                         }
-                    } else {
-                        // Switch to the main thread to update state
+                    }
+                    if (uiLogScheduled.compareAndSet(false, true)) {
                         launch(Dispatchers.Main) {
-                            text += "$it\n"
+                            uiLogScheduled.set(false)
+                            flushUiLog()
                         }
                     }
                 },
@@ -434,6 +460,7 @@ fun FlashScreen(
 
             // After the background task is done, switch to the main thread to update the final state
             withContext(Dispatchers.Main) {
+                flushUiLog()
                 flashResult = result.takeIf { it.code != 0 }
                 var finalLogText = ""
                 if (result.code != 0) {

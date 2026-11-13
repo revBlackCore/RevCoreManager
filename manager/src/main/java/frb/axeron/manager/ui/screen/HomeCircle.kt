@@ -440,11 +440,19 @@ private fun HeroSection(
                     modifier = Modifier.weight(1f),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Image(
-                        painter = painterResource(R.drawable.ic_revcore),
-                        contentDescription = null,
-                        modifier = Modifier.size(28.dp)
-                    )
+                    Box(
+                        modifier = Modifier
+                            .size(36.dp)
+                            .clip(CircleShape)
+                            .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.15f)),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Image(
+                            painter = painterResource(R.drawable.ic_revcore_logo),
+                            contentDescription = null,
+                            modifier = Modifier.size(28.dp)
+                        )
+                    }
                     Spacer(Modifier.width(tokens.spacingSm))
                     Text(
                         text = stringResource(R.string.app_name),
