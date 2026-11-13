@@ -1,49 +1,57 @@
-# Axora
+# RevCore Manager
 
-> A minimalistic, optimized fork of [AxManager](https://github.com/fahrez182/AxManager) for efficient ADB/non-root Android device control with optional root support.
+> A privileged plugin manager for Android — ADB/wireless-debugging first, with full root support when available.
 
-**Axora** is a streamlined fork of [AxManager](https://github.com/fahrez182/AxManager), focused on delivering a high-performance client for Android device management. It retains core ADB/non-root control capabilities while removing unnecessary bloat, prioritizing speed, simplicity, and resource efficiency.
+**RevCore Manager** is a RevCore-branded build of the [Axora](https://github.com/corvexis/Axora) / [AxManager](https://github.com/fahrez182/AxManager) platform, focused on reliable device control, plugin management, and a modern dark glassmorphism interface.
 
-Unlike root-dependent managers such as KernelSU, Axora is designed **ADB/Non-Root first** — root access is fully supported but never required, ensuring compatibility with a wide range of devices.
+It is designed **ADB / Non-Root first** — root access is fully supported but never required, so it works across a wide range of devices.
 
 ## Key Features
 
-- **Minimalistic Design**  
-  Clean, uncluttered interface and workflow focused solely on essential device control tasks.
-- **Performance Optimizations**  
-  Tuned for faster startup times, reduced memory usage, and smoother operation compared to upstream forks.
-- **Full ADB/Non-Root Support**  
-  Complete functionality without root access; optional root integration for advanced use cases.
-- **Core Tools**  
-  Built-in shell executor, unrooted plugin management, and WebUI for browser-based shell access.
-- **Optional Root Compatibility**  
-  Seamlessly leverages root access when available, with no dependency on root permissions.
+- **Privileged Plugin Management**
+  Install, enable, disable, and configure plugins with full lifecycle support — actions, ignition, and progress logs.
+- **Multiple Activation Modes**
+  Root shell, Wireless Debugging pairing, and PC ADB over TCP — with automatic reconnection and boot activation.
+- **WebUI & JavaScript Bridges**
+  Plugins can serve browser-based interfaces with bidirectional JS bridges for deep device control.
+- **Built-in Shell & BusyBox**
+  Terminal executor with bundled BusyBox applets for scripting and system tasks.
+- **Privilege Manager**
+  Per-app permission management powered by the privileged server.
+- **Customizable Experience**
+  Dark glassmorphism UI, multiple accent themes, quick-settings tiles, and saved shell commands.
+- **Optional Root Compatibility**
+  Automatically leverages root access when present, with no hard dependency on it.
 
 ## Build & Install
 
 Clone the repository and build using Android Studio or Gradle:
 
 ```bash
-git clone https://github.com/corvexis/Axora.git
-cd Axora
+git clone https://github.com/revBlackCore/RevCoreManager.git
+cd RevCoreManager
 ./gradlew assembleDebug
 ```
+
+> **Note:** the `api/` directory is a git submodule — run `git submodule update --init --recursive` after cloning.
 
 Install the built APK to your device via ADB:
 
 ```bash
-adb install manager/build/outputs/apk/debug/Axora_v*.apk
+adb install manager/build/outputs/apk/debug/RevCoreManager_v*_*.apk
 ```
 
 ## Contribution
 
-Contributions are welcome! Open issues, submit pull requests, or start discussions to propose improvements or report bugs.
+Contributions, issues, and suggestions are welcome! Open an issue or submit a pull request to propose improvements or report bugs.
 
 ## Credits
 
-### Original Project
-**[AxManager](https://github.com/fahrez182/AxManager)** by **fahrez182**  
-Axora is derived from AxManager. Redistributions or modifications must retain attribution to the original developer, fahrez182.
+### Original Projects
+- **[Axora](https://github.com/corvexis/Axora)** by corvexis — streamlined fork of AxManager
+- **[AxManager](https://github.com/fahrez182/AxManager)** by fahrez182 — original project
+
+RevCore Manager is derived from Axora/AxManager. Redistributions or modifications must retain attribution to the original developers.
 
 ### References & Inspirations
 - **[Magisk](https://github.com/topjohnwu/Magisk)** — Inspiration for BusyBox integration and unrooted plugin concepts
@@ -54,10 +62,11 @@ Axora is derived from AxManager. Redistributions or modifications must retain at
 
 This project includes adapted code from:
 - AxManager (© Fahrez182), licensed under Apache License 2.0
+- Axora (© corvexis), licensed under Apache License 2.0
 - Shizuku Manager (© Rikka Apps), licensed under Apache License 2.0
 - Other open-source projects as credited above
 
-Axora does not distribute original visual assets from AxManager or Shizuku Manager, nor does it claim to be an official replacement. All adapted code complies with the Apache License 2.0.
+RevCore Manager ships its own visual identity (logo, icons, and theme) and does not distribute original visual assets from AxManager, Axora, or Shizuku Manager, nor does it claim to be an official replacement. All adapted code complies with the Apache License 2.0.
 
 ## License
 
