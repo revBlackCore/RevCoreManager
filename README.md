@@ -6,6 +6,25 @@
 
 It is designed **ADB / Non-Root first** — root access is fully supported but never required, so it works across a wide range of devices.
 
+## Screenshots
+
+<table>
+  <tr>
+    <td><img src="docs/screenshots/screenshot-01.png" width="180" alt="RevCore Manager screenshot 1"></td>
+    <td><img src="docs/screenshots/screenshot-02.png" width="180" alt="RevCore Manager screenshot 2"></td>
+    <td><img src="docs/screenshots/screenshot-03.png" width="180" alt="RevCore Manager screenshot 3"></td>
+    <td><img src="docs/screenshots/screenshot-04.png" width="180" alt="RevCore Manager screenshot 4"></td>
+    <td><img src="docs/screenshots/screenshot-05.png" width="180" alt="RevCore Manager screenshot 5"></td>
+  </tr>
+  <tr>
+    <td><img src="docs/screenshots/screenshot-06.png" width="180" alt="RevCore Manager screenshot 6"></td>
+    <td><img src="docs/screenshots/screenshot-07.png" width="180" alt="RevCore Manager screenshot 7"></td>
+    <td><img src="docs/screenshots/screenshot-08.png" width="180" alt="RevCore Manager screenshot 8"></td>
+    <td><img src="docs/screenshots/screenshot-09.png" width="180" alt="RevCore Manager screenshot 9"></td>
+    <td><img src="docs/screenshots/screenshot-10.png" width="180" alt="RevCore Manager screenshot 10"></td>
+  </tr>
+</table>
+
 ## Key Features
 
 - **Privileged Plugin Management**
