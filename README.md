@@ -10,18 +10,18 @@ It is designed **ADB / Non-Root first** — root access is fully supported but n
 
 <table>
   <tr>
-    <td><img src="docs/screenshots/screenshot-01.png" width="180" alt="RevCore Manager screenshot 1"></td>
-    <td><img src="docs/screenshots/screenshot-02.png" width="180" alt="RevCore Manager screenshot 2"></td>
-    <td><img src="docs/screenshots/screenshot-03.png" width="180" alt="RevCore Manager screenshot 3"></td>
-    <td><img src="docs/screenshots/screenshot-04.png" width="180" alt="RevCore Manager screenshot 4"></td>
-    <td><img src="docs/screenshots/screenshot-05.png" width="180" alt="RevCore Manager screenshot 5"></td>
+    <td align="center"><img src="docs/screenshots/home-dashboard.png" width="180" alt="Home dashboard"><br><sub>Home Dashboard</sub></td>
+    <td align="center"><img src="docs/screenshots/privilege-apps.png" width="180" alt="Privilege manager"><br><sub>Privilege Manager</sub></td>
+    <td align="center"><img src="docs/screenshots/plugins.png" width="180" alt="Plugin manager"><br><sub>Plugin Manager</sub></td>
+    <td align="center"><img src="docs/screenshots/settings.png" width="180" alt="Settings"><br><sub>Settings</sub></td>
+    <td align="center"><img src="docs/screenshots/appearance-settings.png" width="180" alt="Appearance settings"><br><sub>Appearance</sub></td>
   </tr>
   <tr>
-    <td><img src="docs/screenshots/screenshot-06.png" width="180" alt="RevCore Manager screenshot 6"></td>
-    <td><img src="docs/screenshots/screenshot-07.png" width="180" alt="RevCore Manager screenshot 7"></td>
-    <td><img src="docs/screenshots/screenshot-08.png" width="180" alt="RevCore Manager screenshot 8"></td>
-    <td><img src="docs/screenshots/screenshot-09.png" width="180" alt="RevCore Manager screenshot 9"></td>
-    <td><img src="docs/screenshots/screenshot-10.png" width="180" alt="RevCore Manager screenshot 10"></td>
+    <td align="center"><img src="docs/screenshots/appearance-settings-2.png" width="180" alt="Appearance settings"><br><sub>Appearance</sub></td>
+    <td align="center"><img src="docs/screenshots/activation-settings.png" width="180" alt="Activation settings"><br><sub>Activation</sub></td>
+    <td align="center"><img src="docs/screenshots/other-settings.png" width="180" alt="Other settings"><br><sub>Other Settings</sub></td>
+    <td align="center"><img src="docs/screenshots/quickshell.png" width="180" alt="QuickShell"><br><sub>QuickShell</sub></td>
+    <td align="center"><img src="docs/screenshots/quickshell-settings.png" width="180" alt="QuickShell settings"><br><sub>QuickShell Settings</sub></td>
   </tr>
 </table>
 
